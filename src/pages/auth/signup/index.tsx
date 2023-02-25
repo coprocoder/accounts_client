@@ -14,40 +14,16 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
-
-interface SignUpError {
-  title: string;
-  text: string;
-}
+import {ISignError, onSignError} from "../signin/errHandler";
 
 export default function SignUp() {
   const imageFileRef = useRef<any>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<SignUpError | null>(null);
+  const [error, setError] = useState<ISignError | null>(null);
 
   const handleImageSelect = (e: any) => {
     const file = e.target.files[0];
     imageFileRef.current = file;
-  };
-
-  const onSignUpError = (error: any) => {
-    console.log({error});
-    if (!error.response) {
-      setError({
-        title: "Нет сети",
-        text: "Пожалуйста, проверьте подключение к сети",
-      });
-    } else if (error.response.status == 500) {
-      setError({
-        title: "Ошибка на сервере",
-        text: "Пожалуйста, обновите страницу и повторите попытку позже",
-      });
-    } else if (error.response.status == 400) {
-      setError({
-        title: "Некоррректные данные",
-        text: error.response.data.message,
-      });
-    } else alert(error);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -80,7 +56,7 @@ export default function SignUp() {
         thumbnail: avatarFile?.thumbnail,
       } as any;
 
-      console.log({formObj});
+    console.log({formObj});
 
     axios
       .post(process.env.REACT_APP_SERVER_URL + "/auth/signup", formObj)
@@ -91,7 +67,7 @@ export default function SignUp() {
       })
       .catch((e) => {
         console.error("SignUp error", e);
-        onSignUpError(e);
+        onSignError(e);
       })
       .finally(() => setLoading(false));
   };

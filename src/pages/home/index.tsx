@@ -11,10 +11,6 @@ const HomePage = observer(() => {
 });
 
 const HomeIntro = () => {
-  const bgGradient = [
-    "linear-gradient(var(--darkWhiteTransparent), var(--darkWhiteTransparent))",
-  ].join(",");
-
   return (
     <Container
       disableGutters
@@ -23,12 +19,7 @@ const HomeIntro = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: "100vh",
-        backgroundImage: `
-          ${bgGradient},
-          url(${process.env.PUBLIC_URL + "/static/images/woodman.jpg"})`,
-        backgroundPosition: "center",
-        backgroundSize: "cover",
+        height: "100%",
       }}
     >
       <HomeIntroBody />

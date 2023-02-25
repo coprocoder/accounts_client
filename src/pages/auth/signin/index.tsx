@@ -14,35 +14,11 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import users from "../../../store/users";
-
-interface SignUpError {
-  title: string;
-  text: string;
-}
+import {ISignError, onSignError} from "./errHandler";
 
 export default function SignIn() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<SignUpError | null>(null);
-
-  const onSignInError = (error: any) => {
-    console.log({error});
-    if (!error.response) {
-      setError({
-        title: "Нет сети",
-        text: "Пожалуйста, проверьте подключение к сети",
-      });
-    } else if (error.response.status == 500) {
-      setError({
-        title: "Ошибка на сервере",
-        text: "Пожалуйста, обновите страницу и повторите попытку позже",
-      });
-    } else if (error.response.status == 400) {
-      setError({
-        title: "Некоррректные данные",
-        text: error.response.data.message,
-      });
-    } else alert(error);
-  };
+  const [error, setError] = useState<ISignError | null>(null);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -64,7 +40,7 @@ export default function SignIn() {
       })
       .catch((e) => {
         console.error("SignUp error", e);
-        onSignInError(e);
+        onSignError(e);
       })
       .finally(() => setLoading(false));
   };

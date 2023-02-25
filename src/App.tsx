@@ -10,6 +10,7 @@ import SignUp from "./pages/auth/signup";
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import * as colors from "@mui/material/colors";
 import users from "./store/users";
+import AppWrapper from "./components/appWrapper";
 
 const Waiter = () => (
   <Backdrop
@@ -28,7 +29,7 @@ const AccountPage = loadable(() => import("./pages/account"), {
   fallback: <Waiter />,
 });
 
-const PeoplePage = loadable(() => import("./pages/account"), {
+const PeoplePage = loadable(() => import("./pages/people"), {
   fallback: <Waiter />,
 });
 
@@ -53,19 +54,21 @@ function App() {
   useEffect(() => {
     users.token = localStorage.getItem("token") as any;
     users.account = localStorage.getItem("account") as any;
-  });
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/account" element={<AccountPage />} />
-          <Route path="/people" element={<PeoplePage />} />
-          <Route path="/people/:id" element={<PeoplePage />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
+        <AppWrapper>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/people" element={<PeoplePage />} />
+            <Route path="/people/:id" element={<PeoplePage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+          </Routes>
+        </AppWrapper>
       </BrowserRouter>
     </ThemeProvider>
   );
