@@ -34,7 +34,7 @@ export default function SignIn() {
         users.token = token;
         users.account = account;
         localStorage.setItem("token", token);
-        localStorage.setItem("account", account);
+        localStorage.setItem("account", JSON.stringify(account));
         // window.location.href = "/";
         // setError(null);
       })
@@ -52,7 +52,7 @@ export default function SignIn() {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <Box

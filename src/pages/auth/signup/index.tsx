@@ -79,7 +79,7 @@ export default function SignUp() {
       sx={{
         display: "flex",
         alignItems: "center",
-        height: "100vh",
+        height: "100%",
       }}
     >
       <Box

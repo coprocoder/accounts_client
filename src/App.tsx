@@ -53,7 +53,7 @@ const theme = createTheme({
 function App() {
   useEffect(() => {
     users.token = localStorage.getItem("token") as any;
-    users.account = localStorage.getItem("account") as any;
+    users.account = JSON.parse(localStorage.getItem("account") as any);
   }, []);
 
   return (
