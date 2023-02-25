@@ -1,0 +1,60 @@
+:root {
+    --primary: hsl(10, 33%, 30%);
+    --primarySecond: hsl(10, 33%, 50%);
+
+    --bgPrimary: rgba(245, 245, 245);
+    --bgSecondary: rgba(255, 255, 255);
+    --gray: rgba(160, 160, 160);
+    --grayTransparent: rgba(160, 160, 160, 0.9);
+
+    --textPrimary: rgb(40, 40, 40);
+    --textSecondary: #818181;
+}
+
+html,
+body {
+    background-color: var(--bgPrimary);
+    margin: 0;
+    overscroll-behavior: none;
+    * {
+        color: var(--textPrimary);
+    }
+}
+
+body {
+    overflow-x: hidden;
+    overflow-y: overlay;
+    ::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--grayTransparent);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray);
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+}
+
+a {
+    font-weight: 400;
+    text-decoration: none;
+    color: var(--primary);
+    transition: all 0.2s ease-in-out;
+    &:hover {
+        color: var(--primarySecond);
+    }
+}
