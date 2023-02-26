@@ -29,7 +29,6 @@ export default function SignIn() {
     axios
       .post(process.env.REACT_APP_SERVER_URL + "/auth/signin", formObj)
       .then((res) => {
-        console.log(res.data);
         const {token, account} = res.data;
         users.token = token;
         users.account = account;
@@ -53,6 +52,7 @@ export default function SignIn() {
         display: "flex",
         alignItems: "center",
         height: "100%",
+        py: window.innerWidth < 960 ? 2 : 0,
       }}
     >
       <Box
@@ -63,7 +63,7 @@ export default function SignIn() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign in
+          Авторизация
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{mt: 1}}>
           <TextField
@@ -71,7 +71,7 @@ export default function SignIn() {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email или имя"
             name="email"
             autoComplete="email"
             autoFocus
@@ -81,13 +81,13 @@ export default function SignIn() {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Пароль"
             type="password"
             id="password"
             autoComplete="current-password"
           />
           {error && (
-            <Alert severity="error" variant="outlined" sx={{mt: 2}}>
+            <Alert sx={{mt: 1}} severity="error" variant="outlined">
               <AlertTitle>{error.title}</AlertTitle>
               {error.text}
             </Alert>
@@ -96,25 +96,30 @@ export default function SignIn() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{mt: 3, mb: 2}}
+            sx={{mt: 2, mb: 2}}
           >
-            Sign In
+            Войти
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Нет аккаунта? Зарегистрируйтесь"}
               </Link>
             </Grid>
           </Grid>
         </Box>
       </Box>
-      {/* <Copyright sx={{mt: 8, mb: 4}} /> */}
       <Backdrop
-        sx={{color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1}}
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
         open={loading}
       >
         <CircularProgress color="inherit" />
+        Авторизация
       </Backdrop>
     </Container>
   );

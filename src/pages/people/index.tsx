@@ -1,18 +1,26 @@
-import React from "react";
-import {Button, Container, Typography} from "@mui/material";
+import Box from "@mui/material/Box";
+import {useEffect} from "react";
+import PeopleList from "./peopleList";
+import UserView from "./userView";
+import users from "../../store/users";
 
 const PeoplePage = () => {
+  useEffect(() => {
+    users.fetchPeople();
+  }, []);
+
   return (
-    <Container
-      disableGutters
-      component="main"
-      maxWidth={false}
+    <Box
       sx={{
         display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        height: "100%",
       }}
     >
-      People
-    </Container>
+      <PeopleList />
+      <UserView />
+    </Box>
   );
 };
 

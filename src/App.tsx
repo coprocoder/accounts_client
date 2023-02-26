@@ -11,10 +11,17 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import * as colors from "@mui/material/colors";
 import users from "./store/users";
 import AppWrapper from "./components/appWrapper";
+import UserView from "./pages/people/userView";
 
 const Waiter = () => (
   <Backdrop
-    sx={{color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1}}
+    sx={{
+      position: "absolute",
+      color: "#fff",
+      zIndex: (theme) => theme.zIndex.drawer + 1,
+      display: "flex",
+      flexDirection: "column",
+    }}
     open={true}
   >
     <CircularProgress color="inherit" />
@@ -54,6 +61,8 @@ function App() {
   useEffect(() => {
     users.token = localStorage.getItem("token") as any;
     users.account = JSON.parse(localStorage.getItem("account") as any);
+    
+    users.fetchPeople();
   }, []);
 
   return (
@@ -64,7 +73,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/people" element={<PeoplePage />} />
-            <Route path="/people/:id" element={<PeoplePage />} />
+            <Route path="/people/:id" element={<UserView />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
           </Routes>

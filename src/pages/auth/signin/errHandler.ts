@@ -11,12 +11,12 @@ export const onSignError = (error: any) => {
       title: "Нет сети",
       text: "Пожалуйста, проверьте подключение к сети",
     };
-  } else if (error.response.status == 500) {
+  } else if (error.response.status === 500) {
     errResponse = {
       title: "Ошибка на сервере",
       text: "Пожалуйста, обновите страницу и повторите попытку позже",
     };
-  } else if (error.response.status == 401) {
+  } else if (error.response.status === 401) {
     errResponse = {
       title: "Некоррректные данные",
       text: error.response.data.message,

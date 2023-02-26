@@ -11,7 +11,7 @@ import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import {ISignError, onSignError} from "../auth/signin/errHandler";
 import ImagePicker from "../auth/signup/imagePicker";
-import users, {UserPart} from "../../store/users";
+import users, {IUser, UserPart} from "../../store/users";
 import {useNavigate} from "react-router-dom";
 
 const AccountPage = () => {
@@ -37,11 +37,17 @@ const AccountPage = () => {
       });
   }, []);
 
-  console.log(accountInfo);
-
   const handleImageSelect = (e: any) => {
     const file = e.target.files[0];
     imageFileRef.current = file;
+  };
+
+  const handleLogout = () => {
+    users.token = null;
+    users.account = null;
+    localStorage.removeItem("token");
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -58,12 +64,9 @@ const AccountPage = () => {
       const imgRes = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/files/upload_img",
         formImg,
-        {
-          method: "POST",
-        }
+        {method: "POST"}
       );
       avatarFile = imgRes.data[0];
-      console.log({avatarFile});
     }
 
     // Upload personal data form
@@ -83,11 +86,17 @@ const AccountPage = () => {
       })
       .then((res) => {
         setError(null);
+
+        const prevInfo = users.account as any;
+        const newInfo = {...prevInfo, ...formObj};
+        users.account = newInfo;
+        localStorage.setItem("account", JSON.stringify(newInfo));
         navigate("/");
       })
       .catch((e) => {
         console.error("SignUp error", e);
-        onSignError(e);
+        const errConf = onSignError(e) as ISignError;
+        setError(errConf);
       })
       .finally(() => setLoading(false));
   };
@@ -113,7 +122,7 @@ const AccountPage = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} textAlign="center">
               <ImagePicker
-                image={
+                url={
                   accountInfo?.avatar
                     ? process.env.REACT_APP_SERVER_URL +
                       "/" +
@@ -133,8 +142,8 @@ const AccountPage = () => {
                 autoFocus
                 value={accountInfo?.username}
                 onChange={(e) => {
-                  const {value} = e.target;
-                  setAccountInfo({...accountInfo, username: value});
+                  const {value: username} = e.target;
+                  setAccountInfo({...accountInfo, username});
                 }}
               />
             </Grid>
@@ -148,14 +157,14 @@ const AccountPage = () => {
                 autoComplete="new-password"
                 value={accountInfo?.password}
                 onChange={(e) => {
-                  const {value} = e.target;
-                  setAccountInfo({...accountInfo, password: value});
+                  const {value: password} = e.target;
+                  setAccountInfo({...accountInfo, password});
                 }}
               />
             </Grid>
           </Grid>
           {error && (
-            <Alert severity="error" variant="outlined">
+            <Alert sx={{mt: 2}} severity="error" variant="outlined">
               <AlertTitle>{error.title}</AlertTitle>
               {error.text}
             </Alert>
@@ -164,18 +173,32 @@ const AccountPage = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{mt: 3, mb: 2}}
+            sx={{mt: 4, mb: 2}}
           >
             Save
           </Button>
         </Box>
+        <Button
+          fullWidth
+          variant="outlined"
+          sx={{mb: 2}}
+          onClick={handleLogout}
+        >
+          Logout
+        </Button>
       </Box>
 
       <Backdrop
-        sx={{color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1}}
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
         open={loading}
       >
         <CircularProgress color="inherit" />
+        Обновление данных
       </Backdrop>
     </Container>
   );

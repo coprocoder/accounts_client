@@ -42,12 +42,9 @@ export default function SignUp() {
       const imgRes = await axios.post(
         process.env.REACT_APP_SERVER_URL + "/files/upload_img",
         formImg,
-        {
-          method: "POST",
-        }
+        {method: "POST"}
       );
       avatarFile = imgRes.data[0];
-      console.log({avatarFile});
     }
 
     // Upload personal data form
@@ -58,18 +55,16 @@ export default function SignUp() {
         thumbnail: avatarFile?.thumbnail,
       } as any;
 
-    console.log({formObj});
-
     axios
       .post(process.env.REACT_APP_SERVER_URL + "/auth/signup", formObj)
       .then((res) => {
-        console.log({res});
         setError(null);
         navigate("/");
       })
       .catch((e) => {
         console.error("SignUp error", e);
-        onSignError(e);
+        const errConf = onSignError(e) as ISignError;
+        setError(errConf);
       })
       .finally(() => setLoading(false));
   };
@@ -82,6 +77,7 @@ export default function SignUp() {
         display: "flex",
         alignItems: "center",
         height: "100%",
+        py: window.innerWidth < 960 ? 2 : 0,
       }}
     >
       <Box
@@ -92,9 +88,9 @@ export default function SignUp() {
         }}
       >
         <Typography component="h1" variant="h5">
-          Sign up
+          Регистрация
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{mt: 3}}>
+        <Box component="form" onSubmit={handleSubmit} sx={{mt: 1}}>
           <Grid container spacing={2}>
             {/* AVATAR */}
             <Grid item xs={12} textAlign="center">
@@ -108,7 +104,7 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="username"
-                label="Username"
+                label="Имя пользователя"
                 autoFocus
               />
             </Grid>
@@ -117,8 +113,9 @@ export default function SignUp() {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="Email"
                 name="email"
+                type="email"
                 autoComplete="email"
               />
             </Grid>
@@ -126,10 +123,10 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                name="password"
-                label="Password"
-                type="password"
                 id="password"
+                label="Пароль"
+                name="password"
+                type="password"
                 autoComplete="new-password"
               />
             </Grid>
@@ -137,9 +134,9 @@ export default function SignUp() {
               <TextField
                 required
                 fullWidth
-                name="birthday"
                 id="date"
-                label="Birthday"
+                label="День рождения"
+                name="birthday"
                 type="date"
                 defaultValue="2017-05-24"
                 InputLabelProps={{
@@ -148,39 +145,36 @@ export default function SignUp() {
               />
             </Grid>
 
-            {/* GENDER */}
             <Grid item xs={12}>
-              <FormControl>
-                <FormLabel id="demo-radio-buttons-group-label">
-                  Gender
-                </FormLabel>
+              <FormControl fullWidth>
+                <FormLabel id="demo-radio-buttons-group-label">Пол</FormLabel>
                 <RadioGroup
                   row
                   aria-labelledby="demo-row-radio-buttons-group-label"
                   name="gender"
-                  defaultValue="other"
+                  defaultValue="not_specified"
                 >
                   <FormControlLabel
                     value="female"
                     control={<Radio />}
-                    label="Female"
+                    label="Женский"
                   />
                   <FormControlLabel
                     value="male"
                     control={<Radio />}
-                    label="Male"
+                    label="Мужской"
                   />
                   <FormControlLabel
-                    value="other"
+                    value="not_specified"
                     control={<Radio />}
-                    label="Other"
+                    label="Не указано"
                   />
                 </RadioGroup>
               </FormControl>
             </Grid>
           </Grid>
           {error && (
-            <Alert severity="error" variant="outlined">
+            <Alert sx={{mt: 1}} severity="error" variant="outlined">
               <AlertTitle>{error.title}</AlertTitle>
               {error.text}
             </Alert>
@@ -189,14 +183,14 @@ export default function SignUp() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{mt: 3, mb: 2}}
+            sx={{mt: 2, mb: 2}}
           >
-            Sign Up
+            Создать
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link href="/signin" variant="body2">
-                Already have an account? Sign in
+                Уже есть аккаунт? Авторизуйтесь
               </Link>
             </Grid>
           </Grid>
@@ -204,10 +198,16 @@ export default function SignUp() {
       </Box>
 
       <Backdrop
-        sx={{color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1}}
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 10,
+          display: "flex",
+          flexDirection: "column",
+        }}
         open={loading}
       >
         <CircularProgress color="inherit" />
+        Регистрация
       </Backdrop>
     </Container>
   );

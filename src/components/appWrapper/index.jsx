@@ -20,7 +20,7 @@ const AppWrapper = observer(({children}) => {
     if (isUnauthInsideApp || isAuthOnSignPage) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="appWrapper">

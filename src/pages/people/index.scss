@@ -1,0 +1,17 @@
+.peopleList {
+    &-user {
+        &:hover {
+            background-color: var(--lightGray);
+        }
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .peopleList {
+        max-width: unset;
+        border-right: unset;
+    }
+    // .userView {
+    //     display: none;
+    // }
+}

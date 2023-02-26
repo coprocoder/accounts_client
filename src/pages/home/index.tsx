@@ -6,7 +6,6 @@ import {observer} from "mobx-react-lite";
 
 const HomePage = observer(() => {
   let token = users.token;
-  console.log({token});
   return token ? <HomeIntro /> : <SignIn />;
 });
 

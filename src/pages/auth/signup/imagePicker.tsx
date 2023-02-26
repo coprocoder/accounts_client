@@ -3,21 +3,22 @@ import IconButton from "@mui/material/IconButton";
 import {useState, useEffect} from "react";
 
 interface PickerProps {
-  image?: string | null;
-  onChange: (params: any) => any;
+  disabled?: boolean;
+  url?: string | null;
+  onChange?: (params: any) => any;
 }
 
-const ImagePicker = ({image, onChange}: PickerProps) => {
+const ImagePicker = ({disabled, url, onChange}: PickerProps) => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imageUrl, setImageUrl] = useState(image);
-
-  console.log({image});
+  const [imageUrl, setImageUrl] = useState(url);
 
   useEffect(() => {
     if (selectedImage) {
       setImageUrl(URL.createObjectURL(selectedImage));
+    } else if (url != imageUrl) {
+      setImageUrl(url);
     }
-  }, [selectedImage]);
+  }, [selectedImage, url]);
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target as HTMLInputElement;
@@ -26,7 +27,7 @@ const ImagePicker = ({image, onChange}: PickerProps) => {
     // } else {
     if (input.files?.length) {
       setSelectedImage(input.files[0]);
-      onChange(e);
+      onChange && onChange(e);
     }
     // }
   };
@@ -34,6 +35,7 @@ const ImagePicker = ({image, onChange}: PickerProps) => {
   return (
     <>
       <input
+        disabled={disabled}
         accept="image/*"
         type="file"
         id="select-image"
@@ -45,8 +47,8 @@ const ImagePicker = ({image, onChange}: PickerProps) => {
           <Avatar
             src={imageUrl || ""}
             style={{
-              width: "5em",
-              height: "5em",
+              width: "8rem",
+              height: "8rem",
             }}
           />
         </IconButton>

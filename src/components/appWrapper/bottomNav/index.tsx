@@ -16,10 +16,9 @@ const BottomNav = () => {
     <BottomNavigation
       showLabels
       value={value}
-      onChange={(event, newValue) => {
-        console.log({newValue});
-        setValue(newValue);
-        navigate(newValue);
+      onChange={(event, newRoute) => {
+        setValue(newRoute);
+        navigate(newRoute);
       }}
       sx={{
         background: "var(--lightGray)",
