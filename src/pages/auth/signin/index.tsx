@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -15,10 +13,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
 import users from "../../../store/users";
 import {ISignError, onSignError} from "./errHandler";
+import {useNavigate} from "react-router-dom";
 
 export default function SignIn() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ISignError | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -35,12 +35,12 @@ export default function SignIn() {
         users.account = account;
         localStorage.setItem("token", token);
         localStorage.setItem("account", JSON.stringify(account));
-        // window.location.href = "/";
-        // setError(null);
+        navigate("/");
       })
       .catch((e) => {
         console.error("SignUp error", e);
-        onSignError(e);
+        const errConf = onSignError(e) as ISignError;
+        setError(errConf);
       })
       .finally(() => setLoading(false));
   };
@@ -65,7 +65,7 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+        <Box component="form" onSubmit={handleSubmit} sx={{mt: 1}}>
           <TextField
             margin="normal"
             required
@@ -86,12 +86,8 @@ export default function SignIn() {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
           {error && (
-            <Alert severity="error" variant="outlined">
+            <Alert severity="error" variant="outlined" sx={{mt: 2}}>
               <AlertTitle>{error.title}</AlertTitle>
               {error.text}
             </Alert>

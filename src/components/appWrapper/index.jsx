@@ -10,7 +10,14 @@ const AppWrapper = observer(({children}) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!users.token) {
+    const curRoute = window.location.pathname;
+    const nonAuthRoutes = ["/signin", "/signup"];
+
+    const token = localStorage.getItem("token");
+
+    const isUnauthInsideApp = !token && !nonAuthRoutes.includes(curRoute);
+    const isAuthOnSignPage = token && nonAuthRoutes.includes(curRoute);
+    if (isUnauthInsideApp || isAuthOnSignPage) {
       navigate("/");
     }
   }, []);

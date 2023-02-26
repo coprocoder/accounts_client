@@ -2,9 +2,16 @@ import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import {useState, useEffect} from "react";
 
-const ImagePicker = ({onChange}) => {
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+interface PickerProps {
+  image?: string | null;
+  onChange: (params: any) => any;
+}
+
+const ImagePicker = ({image, onChange}: PickerProps) => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imageUrl, setImageUrl] = useState(image);
+
+  console.log({image});
 
   useEffect(() => {
     if (selectedImage) {
@@ -12,12 +19,15 @@ const ImagePicker = ({onChange}) => {
     }
   }, [selectedImage]);
 
-  const onSelectFile = (e) => {
+  const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const input = e.target as HTMLInputElement;
     // if (file.size > 1024) {
     //   alert("File size cannot exceed more than 1MB");
     // } else {
-    setSelectedImage(e.target.files[0]);
-    onChange(e);
+    if (input.files?.length) {
+      setSelectedImage(input.files[0]);
+      onChange(e);
+    }
     // }
   };
 
@@ -31,7 +41,7 @@ const ImagePicker = ({onChange}) => {
         onChange={onSelectFile}
       />
       <label htmlFor="select-image">
-        <IconButton variant="contained" component="span">
+        <IconButton component="span">
           <Avatar
             src={imageUrl || ""}
             style={{

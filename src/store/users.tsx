@@ -1,17 +1,24 @@
 import {makeAutoObservable} from "mobx";
 
-interface IUser {
-  name: string;
+interface IAvatar {
+  path: string;
+  thumbnail: string;
+}
+
+export interface IUser {
+  username: string;
   birthday: Date;
-  avatar: string;
+  avatar: IAvatar;
   email?: string;
   password?: string;
   gender?: string;
 }
+export type UserPart = Partial<IUser>;
+// export type UserFull = Required<IUser>;
 
 interface IUsersStore {
   token: string | null;
-  account: Partial<IUser> | null;
+  account: UserPart | null;
   people: Array<IUser>;
 }
 

@@ -49,7 +49,7 @@ const HomeIntroBody = () => {
           fontWeight: "bold",
         }}
       >
-        Создаём интерьер вашей мечты
+        Тестовое задание
       </Typography>
       <Typography
         variant="h5"
@@ -57,7 +57,7 @@ const HomeIntroBody = () => {
         color="text.secondary"
         component="p"
       >
-        Студия Username
+        @coprocoder
       </Typography>
     </Container>
   );

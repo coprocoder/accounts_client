@@ -15,9 +15,11 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import {ISignError, onSignError} from "../signin/errHandler";
+import {useNavigate} from "react-router-dom";
 
 export default function SignUp() {
   const imageFileRef = useRef<any>();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<ISignError | null>(null);
 
@@ -63,7 +65,7 @@ export default function SignUp() {
       .then((res) => {
         console.log({res});
         setError(null);
-        window.location.href = "/";
+        navigate("/");
       })
       .catch((e) => {
         console.error("SignUp error", e);

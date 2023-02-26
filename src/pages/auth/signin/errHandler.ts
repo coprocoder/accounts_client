@@ -16,7 +16,7 @@ export const onSignError = (error: any) => {
       title: "Ошибка на сервере",
       text: "Пожалуйста, обновите страницу и повторите попытку позже",
     };
-  } else if (error.response.status == 400) {
+  } else if (error.response.status == 401) {
     errResponse = {
       title: "Некоррректные данные",
       text: error.response.data.message,
