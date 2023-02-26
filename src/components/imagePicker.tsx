@@ -1,6 +1,7 @@
+import {useState, useEffect} from "react";
+
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
-import {useState, useEffect} from "react";
 
 interface PickerProps {
   disabled?: boolean;
@@ -22,14 +23,16 @@ const ImagePicker = ({disabled, url, onChange}: PickerProps) => {
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target as HTMLInputElement;
-    // if (file.size > 1024) {
-    //   alert("File size cannot exceed more than 1MB");
-    // } else {
     if (input.files?.length) {
-      setSelectedImage(input.files[0]);
-      onChange && onChange(e);
+      const file = input.files[0];
+      console.log(file.size);
+      if (file.size > 2048 * 1024) {
+        alert("File size cannot exceed more than 2MB");
+      } else {
+        setSelectedImage(input.files[0]);
+        onChange && onChange(e);
+      }
     }
-    // }
   };
 
   return (
@@ -43,7 +46,7 @@ const ImagePicker = ({disabled, url, onChange}: PickerProps) => {
         onChange={onSelectFile}
       />
       <label htmlFor="select-image">
-        <IconButton component="span">
+        <IconButton disabled={disabled} component="span">
           <Avatar
             src={imageUrl || ""}
             style={{
@@ -56,5 +59,4 @@ const ImagePicker = ({disabled, url, onChange}: PickerProps) => {
     </>
   );
 };
-
 export default ImagePicker;

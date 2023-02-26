@@ -10,7 +10,7 @@ import AlertTitle from "@mui/material/AlertTitle";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import {ISignError, onSignError} from "../auth/signin/errHandler";
-import ImagePicker from "../auth/signup/imagePicker";
+import ImagePicker from "../../components/imagePicker";
 import users, {IUser, UserPart} from "../../store/users";
 import {useNavigate} from "react-router-dom";
 

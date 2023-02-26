@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import {FormControl, FormLabel, Radio, RadioGroup} from "@mui/material";
-import ImagePicker from "./imagePicker";
+import ImagePicker from "../../../components/imagePicker";
 import axios from "axios";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";

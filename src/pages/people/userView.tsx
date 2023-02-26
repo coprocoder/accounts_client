@@ -2,11 +2,10 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
-import ImagePicker from "../auth/signup/imagePicker";
+import ImagePicker from "../../components/imagePicker";
 import {observer} from "mobx-react-lite";
 import users, {IUser} from "../../store/users";
 import {useParams} from "react-router-dom";
-import Skeleton from "@mui/material/Skeleton";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -23,7 +22,6 @@ const UserView = observer(() => {
   const checkVisible = () => {
     const newVisible =
       !!id ||
-      // TODO: users.selectedUserId = 0 => true
       (users.selectedUserId != null && window.innerWidth < 960) ||
       window.innerWidth > 960;
     setVisible(newVisible);
@@ -36,7 +34,6 @@ const UserView = observer(() => {
 
   useEffect(() => {
     const userId = id || users.selectedUserId;
-    // TODO: userId = 0 => true
     const userInfo =
       users.people && userId != null
         ? (users.people[Number(userId)] as any)
@@ -57,6 +54,11 @@ const UserView = observer(() => {
     users.selectedUserId = null;
   };
 
+  const avatarUrl = userInfo?.avatar
+    ? `${process.env.REACT_APP_SERVER_URL}/${userInfo?.avatar?.thumbnail}`
+    : "";
+  const age = userInfo?.birthday ? calcAge(userInfo.birthday) : null;
+
   return (
     <Box
       className="userView"
@@ -67,22 +69,24 @@ const UserView = observer(() => {
         height: "100%",
       }}
     >
-      <AppBar position="absolute" sx={{boxShadow: "none"}}>
-        <Toolbar variant="dense" sx={{background: "var(--lightGray)"}}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{mr: 2}}
-            onClick={handleBackway}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" component="div">
-            Назад
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      {userInfo && (
+        <AppBar position="absolute" sx={{boxShadow: "none"}}>
+          <Toolbar variant="dense" sx={{background: "var(--lightGray)"}}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{mr: 2}}
+              onClick={handleBackway}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" component="div">
+              Назад
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      )}
       <Container
         maxWidth="xs"
         sx={{
@@ -105,14 +109,7 @@ const UserView = observer(() => {
             <Box component="form" sx={{mt: 3}}>
               <Grid container spacing={2}>
                 <Grid item xs={12} textAlign="center">
-                  <ImagePicker
-                    disabled
-                    url={
-                      userInfo?.avatar
-                        ? `${process.env.REACT_APP_SERVER_URL}/${userInfo?.avatar?.thumbnail}`
-                        : ""
-                    }
-                  />
+                  <ImagePicker disabled url={avatarUrl} />
                 </Grid>
 
                 <Grid item xs={12}>
@@ -132,44 +129,22 @@ const UserView = observer(() => {
                     name="age"
                     label="Age"
                     id="age"
-                    value={
-                      userInfo?.birthday ? calcAge(userInfo.birthday) : null
-                    }
+                    value={`${age} лет`}
                   />
                 </Grid>
               </Grid>
             </Box>
           ) : (
-            <UserViewPlug />
+            <Box sx={{flex: 1, textAlign: "center"}}>
+              <Typography variant="h5" color="inherit" component="div">
+                Выберите пользователя
+              </Typography>
+            </Box>
           )}
         </div>
       </Container>
     </Box>
   );
 });
-
-const UserViewPlug = () => {
-  return (
-    <Box sx={{mt: 3, width: "100%"}}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sx={{display: "flex", justifyContent: "center"}}>
-          <Skeleton
-            variant="circular"
-            width={"8rem"}
-            height={"8rem"}
-            animation="wave"
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <Skeleton variant="text" sx={{fontSize: "4rem"}} animation="wave" />
-        </Grid>
-        <Grid item xs={12}>
-          <Skeleton variant="text" sx={{fontSize: "4rem"}} animation="wave" />
-        </Grid>
-      </Grid>
-    </Box>
-  );
-};
 
 export default UserView;
