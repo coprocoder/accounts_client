@@ -25,14 +25,14 @@ const BottomNav = () => {
         borderTop: "1px solid var(--gray)",
       }}
     >
-      <BottomNavigationAction label="Home" value="/" icon={<HomeIcon />} />
+      <BottomNavigationAction label="Главная" value="/" icon={<HomeIcon />} />
       <BottomNavigationAction
-        label="Account"
+        label="Аккаунт"
         value="/account"
         icon={<PersonIcon />}
       />
       <BottomNavigationAction
-        label="People"
+        label="Люди"
         value="/people"
         icon={<PeopleAltIcon />}
       />

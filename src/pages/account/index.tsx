@@ -138,7 +138,7 @@ const AccountPage = () => {
                 name="username"
                 fullWidth
                 id="username"
-                label="Username"
+                label="Имя пользователя"
                 autoFocus
                 value={accountInfo?.username}
                 onChange={(e) => {
@@ -151,7 +151,7 @@ const AccountPage = () => {
               <TextField
                 fullWidth
                 name="password"
-                label="Password"
+                label="Пароль"
                 type="password"
                 id="password"
                 autoComplete="new-password"

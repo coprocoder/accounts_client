@@ -118,7 +118,7 @@ const UserView = observer(() => {
                     name="username"
                     fullWidth
                     id="username"
-                    label="Username"
+                    label="Имя пользователя"
                     value={userInfo?.username}
                   />
                 </Grid>
@@ -127,7 +127,7 @@ const UserView = observer(() => {
                     disabled
                     fullWidth
                     name="age"
-                    label="Age"
+                    label="Возраст"
                     id="age"
                     value={`${age} лет`}
                   />
